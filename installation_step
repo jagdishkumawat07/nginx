@@ -1,0 +1,23 @@
+Nginx Installation
+Step:1  login with root user then run command to Add the EPEL repository to yum
+yum -y install epel-release
+Step:2  Now use yum to install Nginx and httpd-tools:
+yum -y install nginx httpd-tools
+Step: 3 Use htpasswd to create an admin user, called "kibana" (you should use another name), that can access the Kibana web interface:
+htpasswd -c /etc/nginx/htpasswd.users kibana
+Step: 4 Now start and enable Nginx to put our changes into effect:
+sudo systemctl start nginx
+sudo systemctl enable nginx
+Step: 5 Now open the Nginx configuration file in your favorite editor:
+vi /etc/nginx/nginx.conf
+Step: 6 Now Find the default server block (starts with server {), the first  configuration block in the file:
+server_name  144.217.204.105:5601;
+auth_basic "Private Property";
+auth_basic_user_file /etc/nginx/.httppassword;
+Step: 7 Now Find the default server block (starts with server {), the last configuration block in the file  Save & Exit:
+proxy_pass http://localhost:5601;
+proxy_read_timeout 90;
+Step: 8 Check your change is working properly (it return ok it means that all change done correctly):
+nginx -t;
+Step: 9 restart the nginx service 
+Systemctl restart nginx.service
